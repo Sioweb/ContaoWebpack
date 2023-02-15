@@ -4,7 +4,7 @@
   "description": "My own nice theme!",
   "license": "GPL-3.0",
   "dependencies": {
-    "sioweb-contao-webpack": "file:privateNpm/ContaoWebpack"
+    "sioweb-contao-webpack": "0.0.3"
   },
   "scripts": {
     "build": "npm run build --prefix node_modules/sioweb-contao-webpack",

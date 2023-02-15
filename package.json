@@ -1,6 +1,6 @@
 {
   "name": "sioweb-contao-webpack",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -39,9 +39,7 @@
     "webpackbar": "5.0.2",
     "dotenv": "^16.0.3",
     "chunks-webpack-plugin": "^6.1.0",
-    "brotli-webpack-plugin": "^1.1.0"
-  },
-  "devDependencies": {
+    "brotli-webpack-plugin": "^1.1.0",
     "@babel/cli": "7.5.5",
     "@babel/core": "7.5.5",
     "@babel/plugin-proposal-class-properties": "7.5.5",
