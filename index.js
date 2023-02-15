@@ -3,27 +3,27 @@ const Theme = require('./src/Theme');
 
 class ContaoWebpackConfig extends Common {
 
-    RootTheme = null
-
     Themes = []
 
-    filenessCache = []
+    filesCache = []
 
     constructor(options, Themes) {
         super(options)
     }
 
-    getTheme(options, RootTheme = null) {
-        return new Theme(options, RootTheme)
+    getTheme(options) {
+        let newTheme = new Theme(options)
+        this.Themes.push(newTheme)
+        return newTheme
     }
 
     isFile(file) {
-        if (file in filenessCache) {
-            return filenessCache[file]
+        if (file in filesCache) {
+            return filesCache[file]
         }
         var result = fs.existsSync(file) && fs.statSync(file).isFile()
         if (!process.env.BROWSERSLIST_DISABLE_CACHE) {
-            filenessCache[file] = result
+            filesCache[file] = result
         }
         return result
     }
@@ -33,16 +33,16 @@ class ContaoWebpackConfig extends Common {
     }
 
     getOutputScriptName() {
-        if(this.getMode() !== 'development') {
-            return '[name].[hash].js'
-        }
+        // if(this.getMode() !== 'development') {
+        //     return '[name].[hash].js'
+        // }
         return '[name].js'
     }
 
     getOutputScriptChunkFileName() {
-        if(this.getMode() !== 'development') {
-            return '[name].[hash].js'
-        }
+        // if(this.getMode() !== 'development') {
+        //     return '[name].[hash].js'
+        // }
         return '[name].js'
     }
 
@@ -71,13 +71,13 @@ class ContaoWebpackConfig extends Common {
 
     getProvidedPlugins() {
         return {
-            overlib: 'overlib'
+            // overlib: 'overlib'
         }
     }
 
     getPluginAlias() {
         return {
-            'jquery': 'jquery/src/jquery'
+            // 'jquery': 'jquery/src/jquery'
         }
     }
 }
