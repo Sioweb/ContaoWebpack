@@ -1,6 +1,6 @@
 {
   "name": "sioweb-contao-webpack",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -36,7 +36,10 @@
     "stylelint-webpack-plugin": "2.4.0",
     "terser-webpack-plugin": "4.2.3",
     "webpack": "4.38.0",
-    "webpackbar": "5.0.2"
+    "webpackbar": "5.0.2",
+    "dotenv": "^16.0.3",
+    "chunks-webpack-plugin": "^6.1.0",
+    "brotli-webpack-plugin": "^1.1.0"
   },
   "devDependencies": {
     "@babel/cli": "7.5.5",
@@ -50,11 +53,8 @@
     "autoprefixer": "9.6.1",
     "babel-eslint": "10.0.2",
     "babel-loader": "8.0.6",
-    "brotli-webpack-plugin": "^1.1.0",
     "chokidar": "3.5.3",
-    "chunks-webpack-plugin": "^6.1.0",
     "css-loader": "3.1.0",
-    "dotenv": "^16.0.3",
     "element-closest": "3.0.2",
     "eslint": "7.10.0",
     "eslint-plugin-jest": "26.6.0",
@@ -79,8 +79,8 @@
     "xml2js": "0.4.23"
   },
   "scripts": {
-    "build": "cd ../../ && node node_modules/.bin/parallel-webpack --progress --colors --mode=production --verbose",
-    "local": "cd ../../ && node node_modules/.bin/parallel-webpack --watch --progress --colors --verbose --debug=true --env.NODE_ENV=development --mode development",
-    "watch": "cd ../../ && node node_modules/.bin/parallel-webpack --watch --progress --colors --verbose --debug=true --mode=development --env.NODE_ENV=development --mode development"
+    "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && cd ../../ && node node_modules/.bin/parallel-webpack --progress --colors --mode=production --verbose",
+    "local": "export SET NODE_OPTIONS=--openssl-legacy-provider && cd ../../ && node node_modules/.bin/parallel-webpack --watch --progress --colors --verbose --debug=true --env.NODE_ENV=development --mode development",
+    "watch": "export SET NODE_OPTIONS=--openssl-legacy-provider && cd ../../ && node node_modules/.bin/parallel-webpack --watch --progress --colors --verbose --debug=true --mode=development --env.NODE_ENV=development --mode development"
   }
 }
