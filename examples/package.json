@@ -1,0 +1,14 @@
+{
+  "name": "contao-webpack",
+  "version": "1.0.0",
+  "description": "My own nice theme!",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "sioweb-contao-webpack": "file:privateNpm/ContaoWebpack"
+  },
+  "scripts": {
+    "build": "npm run build --prefix node_modules/sioweb-contao-webpack",
+    "local": "npm run local --prefix node_modules/sioweb-contao-webpack",
+    "watch": "npm run watch --prefix node_modules/sioweb-contao-webpack"
+  }
+}
