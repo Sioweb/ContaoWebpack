@@ -1,31 +1,30 @@
-const dotenv = require("dotenv")
+const dotenv = require("dotenv"),
+      path = require('path');
+
 dotenv.config();
 
-const ContaoWebpackConfig = require('./webpack.config.contao.js');
+const ContaoWebpackConfig = require('./webpack.config.contao.js'),
+      webpack = require('webpack'),
+      BrotliPlugin = require('brotli-webpack-plugin'),
+      MiniCssExtractPlugin = require('mini-css-extract-plugin'),
+      ChunksWebpackPlugin = require('chunks-webpack-plugin');
 
-/**/
-module.exports = ( env, argv ) => {
+let oContaoWebpackConfig = new ContaoWebpackConfig({
+  dir: __dirname,
+  mode: process.env.NODE_ENV || 'production'
+});
 
-  let oContaoWebpackConfig = new ContaoWebpackConfig({
-    dir: __dirname,
-    mode: env.NODE_ENV || 'production'
-  })
-
-  const createVariants = require('parallel-webpack').createVariants
-  const webpack = require('webpack')
-
-  const BrotliPlugin = require('brotli-webpack-plugin')
-  const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-  const ChunksWebpackPlugin = require('chunks-webpack-plugin')
-
-  const configuration = options => ({
+let webpackConfigs = [];
+for(let options of oContaoWebpackConfig.loadConfig().theme) {
+  webpackConfigs.push({
     mode: oContaoWebpackConfig.getMode(),
-    entry: oContaoWebpackConfig.getCommonEntries(options.theme),
+    entry: oContaoWebpackConfig.getCommonEntries(options),
+    devtool: 'source-map',
     output: {
-      path: oContaoWebpackConfig.outSrc(options.theme.name, 'webpack'),
+      path: oContaoWebpackConfig.outSrc(options.name, 'webpack'),
       filename: oContaoWebpackConfig.getOutputScriptName(),
       chunkFilename: oContaoWebpackConfig.getOutputScriptChunkFileName(),
-      publicPath: '/files/' + options.theme.name
+      publicPath: '/files/' + options.name + '/'
     },
     plugins: [
       new ChunksWebpackPlugin(),
@@ -49,19 +48,20 @@ module.exports = ( env, argv ) => {
     },
     resolve: {
       modules: [
-        "node_modules",
+        path.resolve(__dirname, 'node_modules')
       ],
       alias: oContaoWebpackConfig.getPluginAlias(),
     },
     module: {
       rules: [
         {
-          test: /\.m?js$/,
+          test: /\.m?jsx?$/,
           exclude: /(node_modules|bower_components)/,
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env']
+              presets: ['@babel/preset-env'],
+              // plugins: ['@babel/plugin-proposal-class-properties']
             }
           }
         },
@@ -85,7 +85,7 @@ module.exports = ( env, argv ) => {
               loader: 'less-loader',
               options: {
                 sourceMap: true,
-                globalVars: oContaoWebpackConfig.importGlobals(options.theme, 'less')
+                globalVars: oContaoWebpackConfig.importGlobals(options, 'less')
               }
             }
           ],
@@ -148,6 +148,6 @@ module.exports = ( env, argv ) => {
       ],
     }
   })
-  /**/
-  return createVariants({}, oContaoWebpackConfig.loadConfig(), configuration)
 }
+
+module.exports = webpackConfigs;

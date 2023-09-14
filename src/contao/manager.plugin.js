@@ -1,13 +1,18 @@
 export class PluginManager {
 
+	static plugins = {};
+
 	constructor() {
-		this.plugins = {};
+	}
+
+	getRegisteredPlugins() {
+		return PluginManager.plugins;
 	}
 
 	registrate(name, plugin, cssSelector = null, options = {}) {
 		if (cssSelector) {
 			let elements = document.querySelectorAll(cssSelector);
-			this.plugins[name] = [];
+			PluginManager.plugins[name] = [];
 			elements.forEach((element) => {
 				let newPlugin = new plugin();
 				newPlugin.initEvents();
@@ -23,11 +28,11 @@ export class PluginManager {
 					newPlugin.setOptions(options);
 				}
 
-				this.plugins[name].push(newPlugin);
+				PluginManager.plugins[name].push(newPlugin);
 			});
 			return;
 		}
-		this.plugins[name] = [new plugin()];
+		PluginManager.plugins[name] = [new plugin()];
 	}
 
 	nameToDataAttribute(name) {
@@ -41,9 +46,9 @@ export class PluginManager {
 	}
 
 	init() {
-		for(let plugins in this.plugins) {
-			for(let selector in this.plugins[plugins]) {
-				this.plugins[plugins][selector].init();
+		for(let plugins in PluginManager.plugins) {
+			for(let selector in PluginManager.plugins[plugins]) {
+				PluginManager.plugins[plugins][selector].init();
 			}
 		}
 	}
