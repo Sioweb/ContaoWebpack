@@ -43,7 +43,8 @@ for(let options of oContaoWebpackConfig.loadConfig().theme) {
     optimization: {
       splitChunks: {
         chunks: 'all',
-        minSize: 10000
+        minSize: 10000,
+        name: 'src/js/vendor.min',
       }
     },
     resolve: {
