@@ -27,9 +27,9 @@ class Common {
 
     mode = 'production'
     bundleSrc = this.findPath('bundles', this.dir)
-    viewsSrc = this.findPath('files', this.dir)
-    outSrc = this.findPath('files', this.dir)
-    themeSrc = this.findPath('files', this.dir)
+    viewsSrc = this.findPath('files/themes', this.dir)
+    outSrc = this.findPath('files/themes', this.dir)
+    themeSrc = this.findPath('files/themes', this.dir)
 
     findPath() {
         const locations = Array.from(arguments)
