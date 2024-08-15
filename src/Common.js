@@ -26,7 +26,7 @@ class Common {
     }
 
     mode = 'production'
-    bundleSrc = this.findPath('bundles', this.dir)
+    bundleSrc = this.findPath('privateSrc', this.dir)
     viewsSrc = this.findPath('files/themes', this.dir)
     outSrc = this.findPath('files/themes', this.dir)
     themeSrc = this.findPath('files/themes', this.dir)
