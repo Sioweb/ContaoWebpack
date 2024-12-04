@@ -24,8 +24,11 @@ class Theme extends Common {
         }
     }
 
-    getCommonEntries(entries, resources = ['scss','js'], flatten = true) {
+    getCommonEntries(entries, resources = null, flatten = null) {
         let selfObj = this;
+
+        resources = resources || ['scss', 'js'];
+        flatten = flatten !== null ? flatten : true;
 
         if (resources.includes('js')) {
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.js')).forEach(function (widget) {
@@ -76,7 +79,7 @@ class Theme extends Common {
         }
 
         if (flatten) {
-            return flatEntries = Object.values(entries).flat();
+            return Object.values(entries).flat();
         }
         return entries
     }
