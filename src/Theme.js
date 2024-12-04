@@ -24,49 +24,60 @@ class Theme extends Common {
         }
     }
 
-    getCommonEntries(entries) {
+    getCommonEntries(entries, resources = ['scss','js'], flatten = true) {
         let selfObj = this;
 
-        glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.js')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
-        glob.sync(selfObj.themeSrc(selfObj.name, 'js/base.js')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
-        glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.js')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
+        if (resources.includes('js')) {
+            glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.js')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+            glob.sync(selfObj.themeSrc(selfObj.name, 'js/base.js')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+            glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.js')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+        }
 
-        glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.less')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
-        glob.sync(selfObj.themeSrc(selfObj.name, 'less/*.less')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
-        glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.less')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
+        if (resources.includes('less')) {
+            glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.less')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+            glob.sync(selfObj.themeSrc(selfObj.name, 'less/*.less')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+            glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.less')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+        }
 
-        glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.scss')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
-        glob.sync(selfObj.themeSrc(selfObj.name, 'scss/base.scss')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
-        glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.scss')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
+        if (resources.includes('scss')) {
+            glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.scss')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+            glob.sync(selfObj.themeSrc(selfObj.name, 'scss/base.scss')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+            glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.scss')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+        }
 
-        glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.css')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
-        glob.sync(selfObj.themeSrc(selfObj.name, 'css/*.css')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
-        glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.css')).forEach(function (widget) {
-            entries[selfObj.defaultScriptName].push(widget);
-        });
+        if (resources.includes('css')) {
+            glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.css')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+            glob.sync(selfObj.themeSrc(selfObj.name, 'css/*.css')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+            glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.css')).forEach(function (widget) {
+                entries[selfObj.defaultScriptName].push(widget);
+            });
+        }
 
+        if (flatten) {
+            return flatEntries = Object.values(entries).flat();
+        }
         return entries
     }
 

@@ -61,9 +61,9 @@ class ContaoWebpackConfig extends Common {
         }
     }
 
-    getCommonEntries(theme) {
+    getCommonEntries(theme, resources = null, flatten = true) {
         let entries = theme.getDefaultScripts()
-        return theme.getCommonEntries(entries)
+        return theme.getCommonEntries(entries, resources, flatten)
     }
 
     // for less variables
