@@ -3,8 +3,6 @@ const Common = require('./Common');
 const glob = require('glob')
 
 class Theme extends Common {
-    name = ''
-
     defaultEntryPoint = 'js/base.js'
 
     defaultScriptName = 'src/js/scripts.min'
@@ -16,16 +14,13 @@ class Theme extends Common {
 
     constructor(options) {
         super(options)
-
-        for (let o in options) {
-            if (this[o] !== undefined && typeof this[o] !== 'function') {
-                this[o] = options[o]
-            }
-        }
     }
 
-    getCommonEntries(entries, resources = null, flatten = null) {
-        let selfObj = this;
+    getCommonEntries(resources = null, flatten = null) {
+        let selfObj = this,
+            entries = {};
+
+        entries[selfObj.defaultScriptName] = [];
 
         resources = resources || ['scss', 'js'];
         flatten = flatten !== null ? flatten : true;
@@ -34,7 +29,7 @@ class Theme extends Common {
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.js')).forEach(function (widget) {
                 entries[selfObj.defaultScriptName].push(widget);
             });
-            glob.sync(selfObj.themeSrc(selfObj.name, 'js/base.js')).forEach(function (widget) {
+            glob.sync(selfObj.themeSrc('js/base.js')).forEach(function (widget) {
                 entries[selfObj.defaultScriptName].push(widget);
             });
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.js')).forEach(function (widget) {
@@ -46,7 +41,7 @@ class Theme extends Common {
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.less')).forEach(function (widget) {
                 entries[selfObj.defaultScriptName].push(widget);
             });
-            glob.sync(selfObj.themeSrc(selfObj.name, 'less/*.less')).forEach(function (widget) {
+            glob.sync(selfObj.themeSrc('less/*.less')).forEach(function (widget) {
                 entries[selfObj.defaultScriptName].push(widget);
             });
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.less')).forEach(function (widget) {
@@ -58,7 +53,7 @@ class Theme extends Common {
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.scss')).forEach(function (widget) {
                 entries[selfObj.defaultScriptName].push(widget);
             });
-            glob.sync(selfObj.themeSrc(selfObj.name, 'scss/base.scss')).forEach(function (widget) {
+            glob.sync(selfObj.themeSrc('scss/base.scss')).forEach(function (widget) {
                 entries[selfObj.defaultScriptName].push(widget);
             });
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.scss')).forEach(function (widget) {
@@ -70,7 +65,7 @@ class Theme extends Common {
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/init.css')).forEach(function (widget) {
                 entries[selfObj.defaultScriptName].push(widget);
             });
-            glob.sync(selfObj.themeSrc(selfObj.name, 'css/*.css')).forEach(function (widget) {
+            glob.sync(selfObj.themeSrc('css/*.css')).forEach(function (widget) {
                 entries[selfObj.defaultScriptName].push(widget);
             });
             glob.sync(selfObj.bundleSrc('**/**/src/Resources/assets/frontend.css')).forEach(function (widget) {
@@ -81,6 +76,7 @@ class Theme extends Common {
         if (flatten) {
             return Object.values(entries).flat();
         }
+
         return entries
     }
 

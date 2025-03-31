@@ -1,6 +1,6 @@
 {
   "name": "sioweb-contao-webpack",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -19,8 +19,8 @@
   "homepage": "https://github.com/Sioweb/ContaoWebpack#readme",
   "scripts": {
     "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && cd ../../ && node node_modules/.bin/webpack --progress --mode=production",
-    "local": "export SET NODE_OPTIONS=--openssl-legacy-provider && cd ../../ && node node_modules/.bin/webpack --watch --progress --analyze --mode development",
-    "watch": "export SET NODE_OPTIONS=--openssl-legacy-provider && cd ../../ && node node_modules/.bin/webpack --watch --progress --analyze --mode development --node-env development"
+    "local": "export SET NODE_OPTIONS=--openssl-legacy-provider && cd ../../ && node node_modules/.bin/webpack --watch --progress --mode development",
+    "watch": "export SET NODE_OPTIONS=--openssl-legacy-provider && cd ../../ && node node_modules/.bin/webpack --watch --progress --mode development --node-env development"
   },
   "dependencies": {
     "deepmerge": "^4.3.1",

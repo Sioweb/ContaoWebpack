@@ -1,10 +1,24 @@
 const path = require('path')
+const glob = require('glob')
 
 class Common {
+    name = ''
 
     dir = ''
 
     _ENV = {}
+
+    mode = 'production'
+
+    bundleSrcPath = 'privateSrc'
+    viewsSrcPath = 'files/themes'
+    outSrcPath = 'files/themes'
+    themeSrcPath = 'files/themes'
+
+    bundleSrc = () => {}
+    viewsSrc = () => {}
+    outSrc = () => {}
+    themeSrc = () => {}
 
     constructor(options) {
         for (let o in options) {
@@ -18,6 +32,11 @@ class Common {
                 this._ENV[e.toUpperCase()] = process.env[e]
             }
         }
+
+        this.bundleSrc = this.findPath(this.dir, this.bundleSrcPath)
+        this.viewsSrc = this.findPath(this.dir, this.viewsSrcPath)
+        this.outSrc = this.findPath(this.dir, this.outSrcPath)
+        this.themeSrc = this.findPath(this.dir, this.themeSrcPath)
     }
 
     getEnv(_env) {
@@ -25,21 +44,36 @@ class Common {
         return (this._ENV['CONTAO_WEBPACK_' + _env] || this._ENV[_env])
     }
 
-    mode = 'production'
-    bundleSrc = this.findPath('privateSrc', this.dir)
-    viewsSrc = this.findPath('files/themes', this.dir)
-    outSrc = this.findPath('files/themes', this.dir)
-    themeSrc = this.findPath('files/themes', this.dir)
-
     findPath() {
         const locations = Array.from(arguments)
-        function f() {
-            // yo, I heard you like varargs
+        return function () {
             const segments = locations.concat(Array.from(arguments))
             return path.resolve.apply(null, segments)
         }
+    }
 
-        return f
+    findThemePath(options) {
+        let theme = this.findPath('files/themes', options.name),
+            webpackTheme = []
+
+        const matches = glob.sync(theme('.webpack'))
+        for (const hasWebpack of matches) {
+            let themePath = hasWebpack.replace('.webpack', '')
+            webpackTheme = themePath
+            break
+        }
+        return webpackTheme
+    }
+
+    findBundlePaths(options) {
+        let bundles = this.findPath('public/bundles'),
+            webpackBundles = []
+
+        glob.sync(bundles('**/.webpack')).forEach(function (hasWebpack) {
+            let bundlePath = hasWebpack.replace('.webpack', '')
+            webpackBundles.push(bundlePath + options.name + '/')
+        });
+        return webpackBundles
     }
 }
 

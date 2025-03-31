@@ -1,6 +1,6 @@
-const path = require('path'),
-      Common = require('./src/Common'),
-      Theme = require('./src/Theme');
+const Common = require('./src/Common'),
+      Theme = require('./src/Theme'),
+      BundleTheme = require('./src/BundleTheme')
 
 class ContaoWebpackConfig extends Common {
 
@@ -8,14 +8,34 @@ class ContaoWebpackConfig extends Common {
 
     filesCache = []
 
-    constructor(options, Themes) {
-        super(options)
+    getTheme(options) {
+        let themePath = this.findThemePath(options)
+
+        this.Themes.push(new Theme({
+            ...{
+                viewsSrcPath: themePath,
+                outSrcPath: themePath,
+                themeSrcPath: themePath,
+            },
+            ...options
+        }))
     }
 
-    getTheme(options) {
-        let newTheme = new Theme(options)
-        this.Themes.push(newTheme)
-        return newTheme
+    getBundleThemes(options) {
+        let bundles = this.findBundlePaths(options)
+
+        bundles.forEach((bundle) => {
+            this.Themes.push(new BundleTheme({
+                ...{
+                    name: options.name,
+                    type: 'bundle',
+                    viewsSrcPath: bundle,
+                    outSrcPath: bundle,
+                    themeSrcPath: bundle,
+                },
+                ...options,
+            }))
+        })
     }
 
     isFile(file) {
@@ -37,14 +57,14 @@ class ContaoWebpackConfig extends Common {
         // if(this.getMode() !== 'development') {
         //     return '[name].[hash].js'
         // }
-        return '[name].js'
+        return 'src/js/[name].js'
     }
 
     getOutputScriptChunkFileName() {
         // if(this.getMode() !== 'development') {
         //     return '[name].[hash].js'
         // }
-        return '[name].js'
+        return 'src/js/[name].js'
     }
 
     getOutputStyleName() {
@@ -57,7 +77,7 @@ class ContaoWebpackConfig extends Common {
 
     loadConfig () {
         return {
-            theme: this.Themes
+            themes: this.Themes
         }
     }
 
