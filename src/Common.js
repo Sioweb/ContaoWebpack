@@ -59,6 +59,7 @@ class Common {
             const segments = locations.concat(Array.from(arguments))
             let relativePath = path.resolve.apply(null, segments)
             relativePath = relativePath.replace(_dir, '')
+            relativePath = relativePath.replace('/public', '')
             return relativePath
         }
     }
