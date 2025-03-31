@@ -3,9 +3,19 @@ const SiowebContaoWebpack = require('sioweb-contao-webpack')
 class ContaoWebpackConfig extends SiowebContaoWebpack {
 
     constructor(options) {
-        super(options)
+        super()
+        // this.getTheme({ type: 'root', name: 'default' })
+        this.getTheme({
+            ...{
+                type: 'root',
+                name: '586-elan',
+            },
+            ...options
+        })
 
-        this.getTheme({ type: 'root', name: 'default' })
+        // Add bundle assets to webpack
+        // this.getBundleThemes({name: 'backend', ...options})
+        // this.getBundleThemes({name: 'frontend', ...options})
     }
 
     /**
@@ -42,7 +52,7 @@ class ContaoWebpackConfig extends SiowebContaoWebpack {
     getOutputStyleChunkFileName() {
         return super.getOutputStyleChunkFileName()
     }
-    
+
     /**
      * @return (object) Webpack Config like {theme: ...}
      */
@@ -50,15 +60,15 @@ class ContaoWebpackConfig extends SiowebContaoWebpack {
         return super.loadConfig()
     }
 
-    getCommonEntries(theme) {
-        return super.getCommonEntries(theme)
+    getCommonEntries(theme, resources = null, flatten = null) {
+        return super.getCommonEntries(theme, resources, flatten)
     }
 
     /**
      * LESS ONLY (Sass be coming soon..)
-     * @param {object} oTheme 
-     * @param {string} type 
-     * @return Array with Files which can be imported into all LESS files 
+     * @param {object} oTheme
+     * @param {string} type
+     * @return Array with Files which can be imported into all LESS files
      */
     importGlobals(oTheme, type = 'less') {
         return super.importGlobals(oTheme, type)
@@ -79,4 +89,4 @@ class ContaoWebpackConfig extends SiowebContaoWebpack {
     }
 }
 
-module.exports = ContaoWebpackConfig;
+module.exports = ContaoWebpackConfig
