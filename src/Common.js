@@ -35,7 +35,7 @@ class Common {
 
         this.bundleSrc = this.findPath(this.dir, this.bundleSrcPath)
         this.viewsSrc = this.findPath(this.dir, this.viewsSrcPath)
-        this.outSrc = this.findPath(this.dir, this.outSrcPath)
+        this.outSrc = this.findRelativePath(this.outSrcPath)
         this.themeSrc = this.findPath(this.dir, this.themeSrcPath)
     }
 
@@ -49,6 +49,17 @@ class Common {
         return function () {
             const segments = locations.concat(Array.from(arguments))
             return path.resolve.apply(null, segments)
+        }
+    }
+
+    findRelativePath() {
+        const locations = Array.from(arguments),
+            _dir = this.dir
+        return function () {
+            const segments = locations.concat(Array.from(arguments))
+            let relativePath = path.resolve.apply(null, segments)
+            relativePath = relativePath.replace(_dir, '')
+            return relativePath
         }
     }
 
