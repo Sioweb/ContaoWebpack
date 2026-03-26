@@ -12,13 +12,15 @@ class Common {
 
     bundleSrcPath = 'privateSrc'
     viewsSrcPath = 'files/themes'
-    outSrcPath = 'files/themes'
+    outSrcPath = 'assets/sioweb-contao-webpack/themes'
     themeSrcPath = 'files/themes'
+    assetsSrcPath = 'assets/sioweb-contao-webpack'
 
     bundleSrc = () => {}
     viewsSrc = () => {}
     outSrc = () => {}
     themeSrc = () => {}
+    assetsSrc = () => {}
 
     constructor(options) {
         for (let o in options) {
@@ -37,6 +39,7 @@ class Common {
         this.viewsSrc = this.findPath(this.dir, this.viewsSrcPath)
         this.outSrc = this.findRelativePath(this.outSrcPath)
         this.themeSrc = this.findPath(this.dir, this.themeSrcPath)
+        this.assetsSrc = this.findPath(this.dir, this.assetsSrcPath)
     }
 
     getEnv(_env) {
@@ -77,13 +80,16 @@ class Common {
         return webpackTheme
     }
 
-    findBundlePaths(options) {
+    findBundles(options) {
         let bundles = this.findPath('public/bundles'),
             webpackBundles = []
 
         glob.sync(bundles('**/.webpack')).forEach(function (hasWebpack) {
             let bundlePath = hasWebpack.replace('.webpack', '')
-            webpackBundles.push(bundlePath + options.name + '/')
+            webpackBundles.push({
+              name: path.basename(bundlePath),
+              path: bundlePath + options.name + '/',
+            });
         });
         return webpackBundles
     }

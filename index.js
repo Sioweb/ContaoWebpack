@@ -16,22 +16,24 @@ class ContaoWebpackConfig extends Common {
                 viewsSrcPath: themePath,
                 outSrcPath: themePath,
                 themeSrcPath: themePath,
+                assetsSrcPath: this.assetsSrc(options.name),
             },
             ...options
         }))
     }
 
     getBundleThemes(options) {
-        let bundles = this.findBundlePaths(options)
+        let bundles = this.findBundles(options)
 
         bundles.forEach((bundle) => {
             this.Themes.push(new BundleTheme({
                 ...{
                     name: options.name,
                     type: 'bundle',
-                    viewsSrcPath: bundle,
-                    outSrcPath: bundle,
-                    themeSrcPath: bundle,
+                    viewsSrcPath: bundle.path,
+                    outSrcPath: bundle.path,
+                    themeSrcPath: bundle.path,
+                    assetsSrcPath: bundle.path + 'webpack/',
                 },
                 ...options,
             }))
