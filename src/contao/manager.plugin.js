@@ -2,53 +2,52 @@ export class PluginManager {
 
 	static plugins = {};
 
-	constructor() {
-	}
-
 	getRegisteredPlugins() {
 		return PluginManager.plugins;
 	}
 
 	registrate(name, plugin, cssSelector = null, options = {}) {
-		if (cssSelector) {
-			let elements = document.querySelectorAll(cssSelector);
-			PluginManager.plugins[name] = [];
-			elements.forEach((element) => {
-				let newPlugin = new plugin();
-				newPlugin.initEvents();
-				newPlugin.setElement(element);
-				newPlugin.initViewport();
-				try {
-					if (element.hasAttribute(this.nameToDataAttribute(name))) {
-						newPlugin.setOptions(JSON.parse(element.dataset[this.lcfirst(name)]))
-					}
-				} catch(e) {}
-
-				if (Object.keys(options).length) {
-					newPlugin.setOptions(options);
-				}
-
-				PluginManager.plugins[name].push(newPlugin);
-			});
+		if (!cssSelector) {
+			PluginManager.plugins[name] = [new plugin()];
 			return;
 		}
-		PluginManager.plugins[name] = [new plugin()];
+
+		const elements = document.querySelectorAll(cssSelector);
+		PluginManager.plugins[name] = [];
+		elements.forEach((element) => {
+			const newPlugin = new plugin();
+			newPlugin.initEvents();
+			newPlugin.setElement(element);
+			newPlugin.initViewport();
+
+			const attribute = this.nameToDataAttribute(name);
+			if (element.hasAttribute(attribute)) {
+				const raw = element.getAttribute(attribute);
+				try {
+					newPlugin.setOptions(JSON.parse(raw));
+				} catch (error) {
+					throw new Error(`Ungültiges JSON in ${attribute} für Plugin ${name}: ${error.message}`);
+				}
+			}
+
+			if (Object.keys(options).length) {
+				newPlugin.setOptions(options);
+			}
+
+			PluginManager.plugins[name].push(newPlugin);
+		});
 	}
 
 	nameToDataAttribute(name) {
-		name = name.replace(/(.)([A-Z])/g, '$1-$2');
-		name = name.toLowerCase();
-		return 'data-' + name;
-	}
-
-	lcfirst(string) {
-		return string.charAt(0).toLowerCase() + string.slice(1);
+		return 'data-' + name.replace(/(.)([A-Z])/g, '$1-$2').toLowerCase();
 	}
 
 	init() {
-		for(let plugins in PluginManager.plugins) {
-			for(let selector in PluginManager.plugins[plugins]) {
-				PluginManager.plugins[plugins][selector].init();
+		for (const name in PluginManager.plugins) {
+			for (const plugin of PluginManager.plugins[name]) {
+				if (typeof plugin.init === 'function') {
+					plugin.init();
+				}
 			}
 		}
 	}

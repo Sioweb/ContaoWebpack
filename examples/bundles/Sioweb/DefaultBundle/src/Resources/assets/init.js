@@ -1,1 +1,0 @@
-// this file will be loaded before the theme (files/THEMENAME/js/*.js) files
