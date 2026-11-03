@@ -1,6 +1,6 @@
 {
   "name": "sioweb-contao-webpack",
-  "version": "3.0.0",
+  "version": "3.0.3",
   "description": "Contao-Asset-Build fuer Themes und Bundles mit Vite (Marker .webpack oder .vite)",
   "type": "module",
   "main": "src/contao/index.js",
