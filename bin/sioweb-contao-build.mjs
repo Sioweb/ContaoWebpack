@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+import { rmSync } from 'node:fs';
 import { build } from 'vite';
 import { discoverTargets } from '../lib/discovery.mjs';
-import { createBuildConfig } from '../lib/vite-config.mjs';
+import { createBuildConfigs } from '../lib/vite-config.mjs';
 
 const projectRoot = process.cwd();
 
@@ -15,9 +16,15 @@ async function main() {
         return;
     }
 
-    await Promise.all(
-        targets.map((target) => build(createBuildConfig(target, { root: projectRoot, watch, mode })))
+    for (const target of targets) {
+        rmSync(target.outDir, { recursive: true, force: true });
+    }
+
+    const configs = targets.flatMap((target) =>
+        createBuildConfigs(target, { root: projectRoot, watch, mode })
     );
+
+    await Promise.all(configs.map((config) => build(config)));
 }
 
 main().catch((error) => {
