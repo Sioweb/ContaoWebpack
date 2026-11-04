@@ -26,7 +26,7 @@ export class PluginManager {
 				try {
 					newPlugin.setOptions(JSON.parse(raw));
 				} catch (error) {
-					throw new Error(`Invalid JSON in ${attribute} for plugin ${name}: ${error.message}`);
+					throw new Error(`Ungültiges JSON in ${attribute} für Plugin ${name}: ${error.message}`);
 				}
 			}
 
